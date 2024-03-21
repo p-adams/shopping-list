@@ -24,24 +24,29 @@ function ShoppingList() {
   }
   return (
     <div className="shopping-list-wrapper">
-      <input
-        value={newItem?.name}
-        onChange={(e) =>
-          setNewItem((prevItem) => ({ ...prevItem, name: e.target.value }))
-        }
-      />
-      <input
-        min={1}
-        type="number"
-        value={newItem?.quantity}
-        onChange={(e) =>
-          setNewItem((prevItem) => ({
-            ...prevItem,
-            quantity: Number(e.target.value),
-          }))
-        }
-      />
-      <button onClick={() => addNewItem()}>Add</button>
+      <div className="input-wrapper">
+        Add Item:
+        <input
+          value={newItem?.name}
+          onChange={(e) =>
+            setNewItem((prevItem) => ({ ...prevItem, name: e.target.value }))
+          }
+        />
+        Quantity:
+        <input
+          min={1}
+          type="number"
+          value={newItem?.quantity}
+          onChange={(e) =>
+            setNewItem((prevItem) => ({
+              ...prevItem,
+              quantity: Number(e.target.value),
+            }))
+          }
+        />
+        <button onClick={() => addNewItem()}>Add</button>
+      </div>
+
       <ul>
         {shoppingListItems.map((item) => (
           <li key={item.id}>
