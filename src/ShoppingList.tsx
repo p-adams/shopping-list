@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import "./ShoppingList.css";
 
 interface ShoppingListItem {
-  id?: string;
+  id: string;
   name: string;
   quantity: number;
   isPurchased: boolean;
