@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { nanoid } from "nanoid";
 import "./ShoppingList.css";
 
@@ -19,6 +19,7 @@ function ShoppingList() {
     quantity: 1,
     isPurchased: false,
   });
+  const [filter, setFilter] = useState("all");
   function addNewItem() {
     setShoppingListItems((items) => [...items, { ...newItem, id: nanoid() }]);
   }
@@ -62,6 +63,19 @@ function ShoppingList() {
       prevItems.filter((prevItem) => !prevItem.isPurchased)
     );
   }
+
+  const uiShoppingList = useMemo(() => {
+    return shoppingListItems.filter((item) => {
+      if (filter === "purchased") {
+        return item.isPurchased;
+      } else if (filter === "unpurchased") {
+        return !item.isPurchased;
+      }
+
+      return true;
+    });
+  }, [shoppingListItems, filter]);
+
   return (
     <div className="shopping-list-wrapper">
       <div className="input-wrapper">
@@ -86,11 +100,21 @@ function ShoppingList() {
         />
         <button onClick={() => addNewItem()}>Add</button>
       </div>
+      <div className="filters-container">
+        <label>
+          Filters:
+          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+            <option value="all">Show all</option>
+            <option value="purchased">Show purchased</option>
+            <option value="unpurchased">Show unpurchased</option>
+          </select>
+        </label>
+      </div>
       {shoppingListItems.some((i) => i.isPurchased) && (
         <button onClick={() => clearPurchased()}>Clear Purchased</button>
       )}
       <ul className="shopping-list-items">
-        {shoppingListItems.map((item) => (
+        {uiShoppingList.map((item) => (
           <li key={item.id}>
             <input
               type="checkbox"
