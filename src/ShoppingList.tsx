@@ -31,6 +31,32 @@ function ShoppingList() {
       )
     );
   }
+  function inc(item: ShoppingListItem) {
+    setShoppingListItems((prevItems) =>
+      prevItems.map((prevItem) =>
+        prevItem.id === item.id
+          ? { ...prevItem, quantity: prevItem.quantity + 1 }
+          : prevItem
+      )
+    );
+  }
+  function dec(item: ShoppingListItem) {
+    setShoppingListItems((prevItems) =>
+      prevItems.map((prevItem) =>
+        prevItem.id === item.id
+          ? {
+              ...prevItem,
+              quantity: prevItem.quantity - 1,
+            }
+          : prevItem
+      )
+    );
+  }
+  function remove(item: ShoppingListItem) {
+    setShoppingListItems((prevItems) =>
+      prevItems.filter((prevItem) => prevItem.id !== item.id)
+    );
+  }
   return (
     <div className="shopping-list-wrapper">
       <div className="input-wrapper">
@@ -63,11 +89,11 @@ function ShoppingList() {
               onChange={() => toggleIsPurchased(item)}
               checked={item.isPurchased}
             />
-            <span>{item.name}</span>
+            {item.name}
             <span>quantity: {item.quantity}</span>
-            <button>-</button>
-            <button>+</button>
-            <button>delete</button>
+            <button onClick={() => dec(item)}>-</button>
+            <button onClick={() => inc(item)}>+</button>
+            <button onClick={() => remove(item)}>delete</button>
           </li>
         ))}
       </ul>
