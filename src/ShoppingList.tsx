@@ -57,6 +57,11 @@ function ShoppingList() {
       prevItems.filter((prevItem) => prevItem.id !== item.id)
     );
   }
+  function clearPurchased() {
+    setShoppingListItems((prevItems) =>
+      prevItems.filter((prevItem) => !prevItem.isPurchased)
+    );
+  }
   return (
     <div className="shopping-list-wrapper">
       <div className="input-wrapper">
@@ -81,6 +86,9 @@ function ShoppingList() {
         />
         <button onClick={() => addNewItem()}>Add</button>
       </div>
+      {shoppingListItems.some((i) => i.isPurchased) && (
+        <button onClick={() => clearPurchased()}>Clear Purchased</button>
+      )}
       <ul className="shopping-list-items">
         {shoppingListItems.map((item) => (
           <li key={item.id}>
