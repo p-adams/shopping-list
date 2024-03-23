@@ -14,13 +14,22 @@ function ShoppingList() {
     ShoppingListItem[]
   >([]);
   const [newItem, setNewItem] = useState<ShoppingListItem>({
-    id: nanoid(),
+    id: "",
     name: "",
     quantity: 1,
     isPurchased: false,
   });
   function addNewItem() {
-    setShoppingListItems((items) => [...items, newItem]);
+    setShoppingListItems((items) => [...items, { ...newItem, id: nanoid() }]);
+  }
+  function toggleIsPurchased(item: ShoppingListItem) {
+    setShoppingListItems((prevItems) =>
+      prevItems.map((prevItem) =>
+        prevItem.id === item.id
+          ? { ...prevItem, isPurchased: !prevItem.isPurchased }
+          : prevItem
+      )
+    );
   }
   return (
     <div className="shopping-list-wrapper">
@@ -46,11 +55,19 @@ function ShoppingList() {
         />
         <button onClick={() => addNewItem()}>Add</button>
       </div>
-
-      <ul>
+      <ul className="shopping-list-items">
         {shoppingListItems.map((item) => (
           <li key={item.id}>
-            {item.name} - {item.quantity}
+            <input
+              type="checkbox"
+              onChange={() => toggleIsPurchased(item)}
+              checked={item.isPurchased}
+            />
+            <span>{item.name}</span>
+            <span>quantity: {item.quantity}</span>
+            <button>-</button>
+            <button>+</button>
+            <button>delete</button>
           </li>
         ))}
       </ul>
